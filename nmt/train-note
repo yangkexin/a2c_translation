@@ -1,0 +1,16 @@
+%run vocab.py --src_vocab_size 20000 --tgt_vocab_size 20000\
+          --train_src  "data/ch/train.txt" --train_tgt  "data/an/train.txt"\
+          --output 'vocab_ch_an.bin'
+
+%run nmt.py  --cuda --vocab "vocab_ch_an.bin" \
+         --mode "train"\
+         --batch_size 16 --beam_size 5 --sample_size 10\
+         --embed_size 256 --hidden_size 256 --dropout 0.2\
+         --train_src "./data/ch/train.txt" --train_tgt "./data/an/train.txt" \
+         --dev_src "./data/ch/valid.txt" --dev_tgt "./data/an/valid.txt" \
+         --test_src "./data/ch/test.txt" --test_tgt "./data/an/test.txt" \
+         --decode_max_time_step 200 \
+         --lr 1e-3 -lr_decay 0.5\
+         --valid_niter 3000 --log_every 2000 --save_model_after 3\
+         --sample_method 'random'
+         
